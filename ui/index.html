@@ -80,6 +80,7 @@ async function connect() {
       b.className = "trip"; b.textContent = `Trip ${t.trip_id}  (${t.n_fixes} fixes)`;
       b.onclick = () => run(t.trip_id, b);
       $("trips").appendChild(b);
+      if (new URLSearchParams(location.search).get("trip") === t.trip_id) run(t.trip_id, b);
     });
   } catch (e) {
     $("trips").innerHTML = `<span class="err">Cannot reach ${API}: ${e} — retrying in 3 s…</span>`;
