@@ -141,6 +141,8 @@ export PATHSNAP_EVAL_DIR=/path/to/evaluator_test     # default: data/student_tes
 uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
+For the final evaluation, extract the evaluator-test trips to `data/evaluator_test/` and run `.\start_api_eval.ps1` (port 9000 by default). It sets `PATHSNAP_EVAL_DIR` for you.
+
 Every request is logged to that console, for example `PREDICT request trip=…` and `PREDICT done trip=… top1_hmm=…`. The firewall must allow port 8000.
 
 **Laptop 2 runs the UI.** Only the `ui/` folder is needed:
