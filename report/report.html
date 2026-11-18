@@ -190,8 +190,11 @@ Viterbi recurrence: <code>δ<sub>t</sub>(j) = e<sub>t</sub>(j) + max<sub>i</sub>
 </ul>
 <p><b>Leakage safeguards.</b> The predictor loads trips without <code>.route</code>. The reference route is read only in <code>api/evaluator.py</code>, after prediction has finished. Only aggregate metrics are returned; the route is never sent to the UI.</p>
 <p><b>Laptop 2</b> runs the UI: <code>python ui/serve.py</code>. It lists the 10 trips, sends the selected <code>trip_id</code> to the API, and draws the GPS fixes and predicted route with the server-side metrics.</p>
-<img src="img/ui.png"><p class="cap">Working evaluator UI: trip 00000056 processed by the API (HMM Top-1 0.9545, classifier-only 0.9227, route F1 0.9694, 3.4 s).</p>
-<p><b>API console log on the receiving machine</b> (captured output):</p>
+<p><b>Two-laptop deployment test.</b> Both laptops were on the same network. Laptop 1 ran the API at 10.110.92.233:9000; ports 8000 and 8080 fall inside a Windows reserved port range (7985–8084) on that machine, so port 9000 was used. Laptop 2 (10.110.92.209) ran the UI.</p>
+<img src="img/ui_laptop2.webp"><p class="cap">Evaluator UI on Laptop 2, connected to the API on Laptop 1. Trip 00000000: HMM Top-1 0.986, classifier-only 0.9588.</p>
+<img src="img/api_laptop1.png"><p class="cap">API console on Laptop 1 (the receiving laptop). The request from Laptop 2 (10.110.92.209) runs the full pipeline: PREDICT done trip=00000000, top1_hmm=0.986, route_f1=0.9976, 1.27 s, HTTP 200.</p>
+<img src="img/ui.png" style="width:85%"><p class="cap">Additional run of the same UI: trip 00000056 (HMM Top-1 0.9545, classifier-only 0.9227, route F1 0.9694, 3.4 s).</p>
+<p><b>API console log from additional test requests</b> (captured output):</p>
 <pre>INFO:     Uvicorn running on http://0.0.0.0:12475 (Press CTRL+C to quit)
 2026-11-18 14:18:42,533 | INFO | PREDICT request trip=00000056 use_hmm=True
 2026-11-18 14:18:46,886 | INFO | PREDICT done trip=00000056 fixes=3958 top1_hmm=0.9545 top1_clf=0.9227 route_f1=0.9694 time=3.42s
